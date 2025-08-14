@@ -4,7 +4,6 @@ import org.example.volodyanoy.LibrarySpringBootApp.dao.BookDAO;
 import org.example.volodyanoy.LibrarySpringBootApp.dao.PersonDAO;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.services.PeopleService;
-import org.example.volodyanoy.LibrarySpringBootApp.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,9 +31,14 @@ public class PeopleController {
     }
 
     @GetMapping()
-    public String index(Model model){
-        //Получим всех людей  и передадим в views
-        model.addAttribute("people", peopleService.findAll());
+    public String index(Model model, @RequestParam(value = "withBooks", required = false, defaultValue = "false") Boolean withBooks){
+        model.addAttribute("withBooks", withBooks);
+
+        if(withBooks)
+            model.addAttribute("people", peopleService.findAllWithBooks());
+        else
+            model.addAttribute("people", peopleService.findAll());
+
         return "people/index";
     }
 

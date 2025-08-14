@@ -7,6 +7,8 @@ import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.services.BooksService;
 import org.example.volodyanoy.LibrarySpringBootApp.services.PeopleService;
 import org.example.volodyanoy.LibrarySpringBootApp.util.BookValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +17,18 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.Collection;
+
 @Controller
 @RequestMapping("/books")
 public class BooksController {
+    private static final Logger log = LoggerFactory.getLogger(BooksController.class);
     private final BookDAO bookDAO;
     private final BookValidator bookValidator;
     private final PersonDAO personDAO;
     private final BooksService booksService;
     private final PeopleService peopleService;
+    private static final Logger logger = LoggerFactory.getLogger(BooksController.class);
 
     @Autowired
     public BooksController(BookDAO bookDAO, BookValidator bookValidator, PersonDAO personDAO, BooksService booksService, PeopleService peopleService) {
@@ -39,7 +45,7 @@ public class BooksController {
                         @RequestParam(value = "sort_by_year", required = false, defaultValue = "false") Boolean sortByYear,
                         @RequestParam(value = "page", required = false) Integer page,
                         @RequestParam(value = "books_per_page", required = false) Integer booksPerPage){
-
+        logger.info("Параметры GET запроса sort_by_year= {}, page= {}, bookf_per_page= {}", sortByYear, page, booksPerPage);
         if(page != null && booksPerPage != null){
             if(sortByYear){
                 model.addAttribute("books", booksService.findAllAndSortByYearOfWritingAndPagination(page, booksPerPage));
@@ -66,6 +72,11 @@ public class BooksController {
         model.addAttribute("personOwnerOfBook", booksService.getOwnerOfBook(id));
         //Получим всех людей для выпадающего списка
         model.addAttribute("people", peopleService.findAll());
+
+        logger.debug("book {}, personOwnerOfBook {}, size of people list {}", model.asMap().get("book"),
+                model.asMap().get("personOwnerOfBook"),
+                ((Collection<?>) model.asMap().get("people")).size());
+
         return "books/show";
     }
 

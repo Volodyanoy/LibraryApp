@@ -19,6 +19,9 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @OneToOne(mappedBy = "person")
+    private Account account;
+
     @Column(name = "name")
     @NotEmpty(message="Name should not be empty")
     @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
@@ -60,6 +63,14 @@ public class Person {
         return yearOfBirth;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     public void setYearOfBirth(Integer yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
     }
@@ -70,6 +81,15 @@ public class Person {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "yearOfBirth=" + yearOfBirth +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 
     public void addBook(Book book){

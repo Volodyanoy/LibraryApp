@@ -4,6 +4,8 @@ import org.example.volodyanoy.LibrarySpringBootApp.models.Book;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.repositories.PeopleRepository;
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PeopleService {
     private final PeopleRepository peopleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(PeopleService.class);
+
 
     @Autowired
     public PeopleService(PeopleRepository peopleRepository) {
@@ -26,6 +30,10 @@ public class PeopleService {
         return peopleRepository.findAll();
     }
 
+    public List<Person> findAllWithBooks(){
+        return peopleRepository.findAllWithBooks();
+    }
+
     public Person findOne(int id){
         Optional<Person> foundPerson = peopleRepository.findById(id);
         return foundPerson.orElse(null);
@@ -34,6 +42,7 @@ public class PeopleService {
     @Transactional
     public void save(Person person){
         peopleRepository.save(person);
+        logger.info("Успешно добавлен человек {}", person);
     }
 
     @Transactional

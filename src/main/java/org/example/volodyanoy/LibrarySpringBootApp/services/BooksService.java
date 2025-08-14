@@ -3,6 +3,8 @@ package org.example.volodyanoy.LibrarySpringBootApp.services;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Book;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.repositories.BooksRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class BooksService {
     private final BooksRepository booksRepository;
+    private static final Logger logger = LoggerFactory.getLogger(BooksService.class);
 
 
     @Autowired
@@ -52,6 +55,8 @@ public class BooksService {
     @Transactional
     public void save(Book book){
         booksRepository.save(book);
+        logger.info("Успешно добавлена книга {}", book);
+
     }
 
     @Transactional
