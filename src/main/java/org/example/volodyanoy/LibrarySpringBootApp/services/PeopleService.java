@@ -1,12 +1,17 @@
 package org.example.volodyanoy.LibrarySpringBootApp.services;
 
+import org.example.volodyanoy.LibrarySpringBootApp.dto.RegistrationDTO;
+import org.example.volodyanoy.LibrarySpringBootApp.models.Account;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Book;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
+import org.example.volodyanoy.LibrarySpringBootApp.repositories.AccountsRepository;
 import org.example.volodyanoy.LibrarySpringBootApp.repositories.PeopleRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,20 +23,22 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PeopleService {
     private final PeopleRepository peopleRepository;
+    private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(PeopleService.class);
 
 
     @Autowired
-    public PeopleService(PeopleRepository peopleRepository) {
+    public PeopleService(PeopleRepository peopleRepository, PasswordEncoder passwordEncoder) {
         this.peopleRepository = peopleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Person> findAll(){
-        return peopleRepository.findAll();
+        return peopleRepository.findAllWithAccounts();
     }
 
     public List<Person> findAllWithBooks(){
-        return peopleRepository.findAllWithBooks();
+        return peopleRepository.findAllWithBooksAndAccounts();
     }
 
     public Person findOne(int id){
@@ -46,11 +53,19 @@ public class PeopleService {
     }
 
     @Transactional
-    public void update(int id, Person updatedPerson){
-        updatedPerson.setId(id);
-        peopleRepository.save(updatedPerson);
+    public void update(int id, RegistrationDTO registrationDTO){
+        Person person = peopleRepository.findById(id).orElseThrow(() -> new RuntimeException("Person with id " + id + " not found"));
+        Account account = person.getAccount();
+
+        person.setName(registrationDTO.getPerson().getName());
+        person.setYearOfBirth(registrationDTO.getPerson().getYearOfBirth());
+
+        account.setUsername(registrationDTO.getAccount().getUsername());
+        account.setPassword(passwordEncoder.encode(registrationDTO.getAccount().getPassword()));
+
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public void delete(int id){
         List<Book> books = getBooksInPersonPossession(id);

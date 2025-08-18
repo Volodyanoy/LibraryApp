@@ -1,6 +1,7 @@
 package org.example.volodyanoy.LibrarySpringBootApp.controllers;
 
 import jakarta.validation.Valid;
+import org.example.volodyanoy.LibrarySpringBootApp.dto.RegistrationDTO;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Account;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.services.RegistrationService;
@@ -34,20 +35,20 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("account") Account account, @ModelAttribute("person") Person person){
+    public String registrationPage(@ModelAttribute("registrationDTO") RegistrationDTO registrationDTO){
         return "auth/registration";
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("account") @Valid Account account, @ModelAttribute("person") @Valid Person person, BindingResult bindingResult){
-        accountValidator.validate(account, bindingResult);
+    public String performRegistration(@ModelAttribute("registrationDTO") RegistrationDTO registrationDTO, BindingResult bindingResult){
+        accountValidator.validate(registrationDTO.getAccount(), bindingResult);
 
         if(bindingResult.hasErrors()){
-            logger.info("Ошибка данных при регистрации пользователя {}", account);
+            logger.info("Ошибка данных при регистрации пользователя {}", registrationDTO.getAccount());
             return "/auth/registration";
         }
-        registrationService.register(account, person);
-        logger.info("Успешная регистрация пользователя {}", account);
+        registrationService.register(registrationDTO);
+        logger.info("Успешная регистрация пользователя {}", registrationDTO.getAccount());
 
         return "redirect:/auth/login";
     }

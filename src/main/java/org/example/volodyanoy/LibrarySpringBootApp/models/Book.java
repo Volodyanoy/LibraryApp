@@ -19,18 +19,18 @@ public class Book {
 
     @Column(name = "title")
     @NotEmpty
-    @Size(min = 2, max = 50, message = "Title should be between 2 and 50 characters")
+    @Size(min = 2, max = 50, message = "Количество символов должно быть от 2 до 50")
     private String title;
 
     @Column(name = "author")
     @NotEmpty
-    @Size(min = 2, max = 50, message = "Name author should be between 2 and 50 characters")
+    @Size(min = 2, max = 50, message = "Количество символов должно быть от 2 до 50")
     private String author;
 
     @Column(name = "year_of_writing")
     @NotNull
-    @Min(value = 1700, message = "Year of birth should be greater than 1700")
-    @Max(value = 2026, message = "Year of birth should be less than 2026")
+    @Min(value = 1700, message = "Год издания должен быть больше 1700")
+    @Max(value = 2026, message = "Год издания должен быть меньше 2026")
     private Integer yearOfWriting;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -10,13 +10,14 @@
 <div th:if="${personOwnerOfBook == null}">
     <p>Эта книга свободна. Кому назначить её?</p>
     <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+        
         <label for="person">Выберите человека:</label>
         <select th:object="${person}" th:field="*{id}" id="person">
             <option th:each="person : ${people}" th:value="${person.getId()}"
                     th:text="${person.getName()}"></option>
         </select>
 
-        <input type="submit" value="Assign"/>
+        <input type="submit" value="Назначить"/>
     </form>
 </div>
 
@@ -25,7 +26,8 @@
 
     <br/>
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
-        <input type="submit" value="Release">
+        
+        <input type="submit" value="Освободить">
     </form>
 </div>
 
@@ -37,13 +39,14 @@
 
 <br/>
 <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
-    <input type="submit" value="Edit">
+    <input type="submit" value="Изменить">
 </form>
 
 
 <br/>
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
-    <input type="submit" value="Delete">
+    
+    <input type="submit" value="Удалить">
 </form>
 </body>
 </html>

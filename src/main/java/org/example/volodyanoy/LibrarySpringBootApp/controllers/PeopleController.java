@@ -2,8 +2,12 @@ package org.example.volodyanoy.LibrarySpringBootApp.controllers;
 
 import org.example.volodyanoy.LibrarySpringBootApp.dao.BookDAO;
 import org.example.volodyanoy.LibrarySpringBootApp.dao.PersonDAO;
+import org.example.volodyanoy.LibrarySpringBootApp.dto.RegistrationDTO;
+import org.example.volodyanoy.LibrarySpringBootApp.models.Account;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.services.PeopleService;
+import org.example.volodyanoy.LibrarySpringBootApp.util.AccountUpdateValidator;
+import org.example.volodyanoy.LibrarySpringBootApp.util.AccountValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +22,18 @@ public class PeopleController {
 
 
     private final PersonDAO personDAO;
-    private final PersonValidator personValidator;
     private final BookDAO bookDAO;
     private final PeopleService peopleService;
+    private final AccountValidator accountValidator;
+    private final AccountUpdateValidator  accountUpdateValidator;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO, PersonValidator personValidator, BookDAO bookDAO, PeopleService peopleService) {
+    public PeopleController(PersonDAO personDAO, BookDAO bookDAO, PeopleService peopleService, AccountValidator accountValidator, AccountUpdateValidator accountUpdateValidator) {
         this.personDAO = personDAO;
-        this.personValidator = personValidator;
         this.bookDAO = bookDAO;
         this.peopleService = peopleService;
+        this.accountValidator = accountValidator;
+        this.accountUpdateValidator = accountUpdateValidator;
     }
 
     @GetMapping()
@@ -53,37 +59,31 @@ public class PeopleController {
     }
 
     @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person") Person person){
-        return "people/new";
+    public String newPerson() {
+        return "redirect:/auth/registration";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){
-        personValidator.validate(person, bindingResult);
-
-        if(bindingResult.hasErrors()){
-            return "people/new";
-        }
-
-        peopleService.save(person);
-        return "redirect:/people";
-
+    public String create() {
+        return "redirect:/auth/registration";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id){
-        model.addAttribute("person", peopleService.findOne(id));
+        RegistrationDTO dto = convertToRegistrationDTO(peopleService.findOne(id));
+        model.addAttribute("registrationDTO", dto);
         return "people/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+    public String update(@ModelAttribute("registrationDTO") @Valid RegistrationDTO registrationDTO, BindingResult bindingResult,
                          @PathVariable("id") int id){
+        accountUpdateValidator.validate(registrationDTO.getAccount(), bindingResult);
         if(bindingResult.hasErrors()){
             return "people/edit";
         }
 
-        peopleService.update(id, person);
+        peopleService.update(id, registrationDTO);
         return "redirect:/people";
     }
 
@@ -91,6 +91,11 @@ public class PeopleController {
     public String delete(@PathVariable("id") int id){
         peopleService.delete(id);
         return "redirect:/people";
+    }
+
+    private RegistrationDTO convertToRegistrationDTO(Person person){
+        Account account = person.getAccount();
+        return new RegistrationDTO(person, account);
     }
 
 

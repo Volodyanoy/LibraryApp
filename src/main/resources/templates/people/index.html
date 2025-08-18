@@ -26,8 +26,13 @@
 
 <br/>
 <hr/>
-<a href="/people/new">Create new person</a>
+<a href="/people/new">Создать аккаунт</a>
+<br/>
+<br/>
+<form th:method="POST" th:action="@{/logout}">
 
+    <input type="submit" value="Выйти из аккаунта">
+</form>
 
 </body>
 </html>

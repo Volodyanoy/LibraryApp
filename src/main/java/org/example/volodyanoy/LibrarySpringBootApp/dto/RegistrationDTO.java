@@ -12,6 +12,11 @@ public class RegistrationDTO {
 
     RegistrationDTO(){}
 
+    public RegistrationDTO(Person person, Account account){
+        this.person = person;
+        this.account = account;
+    }
+
     public Person getPerson() {
         return person;
     }

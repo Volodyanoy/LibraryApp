@@ -5,6 +5,7 @@ package org.example.volodyanoy.LibrarySpringBootApp.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,18 +20,19 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(mappedBy = "person")
+
+    @OneToOne(mappedBy = "person", fetch = FetchType.LAZY)
     private Account account;
 
     @Column(name = "name")
-    @NotEmpty(message="Name should not be empty")
-    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
+    @NotEmpty(message="Имя не должно быть пустым")
+    @Size(min = 2, max = 50, message = "Количество символов должно быть от 2 до 50")
     private String name;
 
     @Column(name = "year_of_birth")
-    @NotNull(message = "Year of birth should not be empty")
-    @Min(value = 1900, message = "Year of birth should be greater than 1900")
-    @Max(value = 2026, message = "Year of birth should be less than 2026")
+    @NotNull(message = "Год рождения не должен быть пустым")
+    @Min(value = 1900, message = "Год рождения должен быть больше 1900")
+    @Max(value = 2026, message = "Год рождения должен быть меньше 2026")
     private Integer yearOfBirth;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)

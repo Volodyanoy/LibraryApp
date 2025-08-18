@@ -13,15 +13,16 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "id", unique = true)
     private Person person;
 
-    @NotEmpty(message = "Not empty")
-    @Size(min = 2, max = 100, message = "length from 2 to 100 ")
+    @NotEmpty(message = "Поле не должно быть пустым")
+    @Size(min = 2, max = 100, message = "Количество символов должно быть от 2 до 100")
     @Column(name = "username", unique = true)
     private String username;
 
+    @NotEmpty(message = "Поле не должно быть пустым")
     @Column(name = "password")
     private String password;
 

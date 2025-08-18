@@ -13,8 +13,13 @@
 
 <br/>
 <hr/>
-<a href="/books/new">Create new book</a>
+<a href="/books/new">Создать новую книгу</a>
+<br/>
+<br/>
+<form th:method="POST" th:action="@{/logout}">
 
+    <input type="submit" value="Выйти из аккаунта">
+</form>
 
 </body>
 </html>

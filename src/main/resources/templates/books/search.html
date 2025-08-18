@@ -8,8 +8,8 @@
 
 <div th:if="${searchFlag == false}">
     <form th:action="@{/books/search}" method="get">
-        <input type="text" name="query" th:value="${query}" placeholder="Enter your search query"/>
-        <button type="submit">Search!</button>
+        <input type="text" name="query" th:value="${query}" placeholder="Введите Ваш поисковый запрос"/>
+        <button type="submit">Поиск!</button>
     </form>
 </div>
 
@@ -17,8 +17,8 @@
 <div th:if="${searchFlag == true}">
 
     <form th:action="@{/books/search}" method="get">
-        <input type="text" name="query" th:value="${query}" placeholder="Enter your search query"/>
-        <button type="submit">Search!</button>
+        <input type="text" name="query" th:value="${query}" placeholder="Введите Ваш поисковый запрос"/>
+        <button type="submit">Поиск!</button>
     </form>
     <br/>
 

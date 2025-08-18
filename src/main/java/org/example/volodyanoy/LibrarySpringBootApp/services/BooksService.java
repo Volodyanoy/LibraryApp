@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,11 @@ public class BooksService {
         return foundBook.orElse(null);
     }
 
+    public Book findByTitleAndYearOfWritingAndAuthor(Book book){
+        Optional<Book> foundBook = booksRepository.findByTitleAndYearOfWritingAndAuthor(book.getTitle(), book.getYearOfWriting(), book.getAuthor());
+        return foundBook.orElse(null);
+    }
+
     @Transactional
     public void save(Book book){
         booksRepository.save(book);
@@ -65,6 +71,7 @@ public class BooksService {
         booksRepository.save(updatedBook);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public void delete(int id){
 
@@ -75,6 +82,7 @@ public class BooksService {
         return booksRepository.findById(id).map(Book::getOwner).orElse(null);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public void releaseBook(int id){
         booksRepository.findById(id).ifPresent(book -> {
@@ -84,6 +92,7 @@ public class BooksService {
         });
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public void assignBook(int id, Person person){
         booksRepository.findById(id).ifPresent(book -> {
