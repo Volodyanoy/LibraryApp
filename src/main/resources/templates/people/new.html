@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/people}" th:object="${registrationDTO}">
+
+    <input type="hidden" th:field="*{person.id}" />
+    <input type="hidden" th:field="*{account.id}" />
+
+    <label for="username">Введите имя пользователя: </label>
+    <input type="text" th:field="*{account.username}" id="username"/>
+    <div style="color:red" th:if="${#fields.hasErrors('account.username')}" th:errors="*{account.username}">username error</div>
+    <br/>
+
+    <label for="password">Введите пароль: </label>
+    <input type="password" th:field="*{account.password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('account.password')}" th:errors="*{account.password}">password error</div>
+    <br/>
+
+    <label for="name">Введите имя: </label>
+    <input type="text" th:field="*{person.name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('person.name')}" th:errors="*{person.name}">name error</div>
+    <br/>
+
+    <label for="yearOfBirth">Введите дату рождения: </label>
+    <input type="text" th:field="*{person.yearOfBirth}" id="yearOfBirth"/>
+    <div style="color:red" th:if="${#fields.hasErrors('person.yearOfBirth')}" th:errors="*{person.yearOfBirth}">Year of birth error</div>
+    <br/>
+
+    <input type="submit" value="Создать!"/>
+</form>
+
+
+
+</body>
+</html>
