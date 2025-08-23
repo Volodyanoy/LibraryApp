@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.parameters.P;
 
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ public class BooksServiceTest {
     private BooksService booksService;
 
     @Test
-    void testAssignBookC(){
+    void testAssignBookC() {
         Book book = new Book();
         Person oldOwner = new Person();
         Person newOnwer = new Person();
@@ -40,7 +39,7 @@ public class BooksServiceTest {
     }
 
     @Test
-    void testReleaseBook(){
+    void testReleaseBook() {
         Book book = new Book();
         Person owner = new Person();
         book.setOwner(owner);

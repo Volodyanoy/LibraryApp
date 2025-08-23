@@ -27,77 +27,81 @@ public class BooksService {
         this.booksRepository = booksRepository;
     }
 
-    public List<Book> findAll(){
+    public List<Book> findAll() {
         return booksRepository.findAll();
     }
 
-    public List<Book> findAllAndSortByYearOfWriting(){
+    public List<Book> findAllAndSortByYearOfWriting() {
         return booksRepository.findAll(Sort.by("yearOfWriting"));
     }
 
-    public List<Book> findAllAndPagination(Integer page, Integer booksPerPage){
+    public List<Book> findAllAndPagination(Integer page, Integer booksPerPage) {
         return booksRepository.findAll(PageRequest.of(page, booksPerPage)).getContent();
     }
 
-    public List<Book> findAllAndSortByYearOfWritingAndPagination(Integer page, Integer booksPerPage){
+    public List<Book> findAllAndSortByYearOfWritingAndPagination(Integer page, Integer booksPerPage) {
         return booksRepository.findAll(PageRequest.of(page, booksPerPage, Sort.by("yearOfWriting"))).getContent();
     }
 
-    public List<Book> findBooksByTitle(String searchQuery){
+    public List<Book> findBooksByTitle(String searchQuery) {
         return booksRepository.findByTitleStartingWith(searchQuery);
 
     }
 
-    public Book findOne(int id){
+    public Book findOne(int id) {
         Optional<Book> foundBook = booksRepository.findById(id);
         return foundBook.orElse(null);
     }
 
-    public Book findByTitleAndYearOfWritingAndAuthor(Book book){
+    public Book findByTitleAndYearOfWritingAndAuthor(Book book) {
         Optional<Book> foundBook = booksRepository.findByTitleAndYearOfWritingAndAuthor(book.getTitle(), book.getYearOfWriting(), book.getAuthor());
         return foundBook.orElse(null);
     }
 
+    public boolean isBookExists(Book book){
+        return booksRepository.existsByTitleAndYearOfWritingAndAuthor(book.getTitle(), book.getYearOfWriting(), book.getAuthor());
+    }
+
     @Transactional
-    public void save(Book book){
+    public void save(Book book) {
         booksRepository.save(book);
         logger.info("Успешно добавлена книга {}", book);
 
     }
 
     @Transactional
-    public void update(int id, Book updatedBook){
+    public void update(int id, Book updatedBook) {
         updatedBook.setId(id);
         booksRepository.save(updatedBook);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void delete(int id){
+    public void delete(int id) {
 
         booksRepository.deleteById(id);
     }
 
-    public Person getOwnerOfBook(int id){
+    public Person getOwnerOfBook(int id) {
         return booksRepository.findById(id).map(Book::getOwner).orElse(null);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void releaseBook(int id){
+    public void releaseBook(int id) {
         booksRepository.findById(id).ifPresent(book -> {
             Person owner = book.getOwner();
-            if(owner != null)
+            if (owner != null)
                 owner.removeBook(book);
         });
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void assignBook(int id, Person person){
+    public void assignBook(int id, Person person) {
         booksRepository.findById(id).ifPresent(book -> {
             Person oldOwner = book.getOwner();
-            if(oldOwner != null)
+            if (oldOwner != null)
                 oldOwner.removeBook(book);
             person.addBook(book);
         });

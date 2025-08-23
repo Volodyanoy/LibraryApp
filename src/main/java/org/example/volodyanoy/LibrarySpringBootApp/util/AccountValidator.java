@@ -1,7 +1,6 @@
 package org.example.volodyanoy.LibrarySpringBootApp.util;
 
 import org.example.volodyanoy.LibrarySpringBootApp.models.Account;
-import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,8 +26,7 @@ public class AccountValidator implements Validator {
 
         Account account = (Account) target;
 
-        Account foundedAccount = accountService.findByUsername(account.getUsername());
-        if(foundedAccount != null){
+        if (accountService.isAccountExists(account)) {
             errors.rejectValue("username", "", "Такое имя пользователя уже существует");
         }
 

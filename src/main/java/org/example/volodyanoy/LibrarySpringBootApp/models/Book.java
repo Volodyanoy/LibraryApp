@@ -1,7 +1,6 @@
 package org.example.volodyanoy.LibrarySpringBootApp.models;
 
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -42,17 +41,18 @@ public class Book {
 
     @Transient
     boolean isOverdue;
-    
-    public Book(){}
 
-    public Book(String title, String author, Integer yearOfWriting){
+    public Book() {
+    }
+
+    public Book(String title, String author, Integer yearOfWriting) {
         this.title = title;
         this.author = author;
         this.yearOfWriting = yearOfWriting;
     }
 
-    public boolean isOverdue(){
-        if(dateOfBookAssignment == null)
+    public boolean isOverdue() {
+        if (dateOfBookAssignment == null)
             return false;
         return ChronoUnit.DAYS.between(dateOfBookAssignment, LocalDateTime.now()) > 10;
     }

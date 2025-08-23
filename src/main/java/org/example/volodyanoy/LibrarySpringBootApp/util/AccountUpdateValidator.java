@@ -31,9 +31,9 @@ public class AccountUpdateValidator implements Validator {
         logger.info("Account username {} and id {}", account.getUsername(), account.getId());
         Account foundedAccount = accountService.findByUsername(account.getUsername());
 
-        if(foundedAccount != null && foundedAccount.getId() != account.getId()){
+        if (foundedAccount != null && foundedAccount.getId() != account.getId()) {
             logger.info("Founded username {} and id {}", foundedAccount.getUsername(), foundedAccount.getId());
-            errors.reject( "", "Внимание! Аккаунт с таким username уже существует");
+            errors.reject("", "Внимание! Аккаунт с таким username уже существует");
         }
 
     }
