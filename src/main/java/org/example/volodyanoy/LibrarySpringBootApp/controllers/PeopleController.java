@@ -1,5 +1,6 @@
 package org.example.volodyanoy.LibrarySpringBootApp.controllers;
 
+import jakarta.validation.Valid;
 import org.example.volodyanoy.LibrarySpringBootApp.dao.BookDAO;
 import org.example.volodyanoy.LibrarySpringBootApp.dao.PersonDAO;
 import org.example.volodyanoy.LibrarySpringBootApp.dto.RegistrationDTO;
@@ -14,8 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
-
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
@@ -25,7 +24,7 @@ public class PeopleController {
     private final BookDAO bookDAO;
     private final PeopleService peopleService;
     private final AccountValidator accountValidator;
-    private final AccountUpdateValidator  accountUpdateValidator;
+    private final AccountUpdateValidator accountUpdateValidator;
 
     @Autowired
     public PeopleController(PersonDAO personDAO, BookDAO bookDAO, PeopleService peopleService, AccountValidator accountValidator, AccountUpdateValidator accountUpdateValidator) {
@@ -37,10 +36,10 @@ public class PeopleController {
     }
 
     @GetMapping()
-    public String index(Model model, @RequestParam(value = "withBooks", required = false, defaultValue = "false") Boolean withBooks){
+    public String index(Model model, @RequestParam(value = "withBooks", required = false, defaultValue = "false") Boolean withBooks) {
         model.addAttribute("withBooks", withBooks);
 
-        if(withBooks)
+        if (withBooks)
             model.addAttribute("people", peopleService.findAllWithBooks());
         else
             model.addAttribute("people", peopleService.findAll());
@@ -49,7 +48,7 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") int id, Model model) {
         //Получим одного человека по id и передадим в views
         model.addAttribute("person", peopleService.findOne(id));
         //Получим список книг, которые взял этот человек
@@ -69,7 +68,7 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id){
+    public String edit(Model model, @PathVariable("id") int id) {
         RegistrationDTO dto = convertToRegistrationDTO(peopleService.findOne(id));
         model.addAttribute("registrationDTO", dto);
         return "people/edit";
@@ -77,9 +76,9 @@ public class PeopleController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("registrationDTO") @Valid RegistrationDTO registrationDTO, BindingResult bindingResult,
-                         @PathVariable("id") int id){
+                         @PathVariable("id") int id) {
         accountUpdateValidator.validate(registrationDTO.getAccount(), bindingResult);
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "people/edit";
         }
 
@@ -88,12 +87,12 @@ public class PeopleController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") int id) {
         peopleService.delete(id);
         return "redirect:/people";
     }
 
-    private RegistrationDTO convertToRegistrationDTO(Person person){
+    private RegistrationDTO convertToRegistrationDTO(Person person) {
         Account account = person.getAccount();
         return new RegistrationDTO(person, account);
     }

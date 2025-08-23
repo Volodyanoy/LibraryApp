@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public class AccountDetails implements UserDetails {
     private final Account account;
@@ -52,7 +51,7 @@ public class AccountDetails implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public Account getAccount(){
+    public Account getAccount() {
         return this.account;
     }
 }

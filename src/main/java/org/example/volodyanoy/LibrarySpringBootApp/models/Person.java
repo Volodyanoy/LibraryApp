@@ -1,11 +1,8 @@
 package org.example.volodyanoy.LibrarySpringBootApp.models;
 
 
-
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ public class Person {
     private Account account;
 
     @Column(name = "name")
-    @NotEmpty(message="Имя не должно быть пустым")
+    @NotEmpty(message = "Имя не должно быть пустым")
     @Size(min = 2, max = 50, message = "Количество символов должно быть от 2 до 50")
     private String name;
 
@@ -38,7 +35,8 @@ public class Person {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
-    public Person(){}
+    public Person() {
+    }
 
     public Person(String name, Integer yearOfBirth) {
         this.name = name;
@@ -94,13 +92,13 @@ public class Person {
                 '}';
     }
 
-    public void addBook(Book book){
+    public void addBook(Book book) {
         book.setDateOfBookAssignment(LocalDateTime.now());
         book.setOwner(this);
         books.add(book);
     }
 
-    public void removeBook(Book book){
+    public void removeBook(Book book) {
         book.setDateOfBookAssignment(null);
         book.setOwner(null);
         books.remove(book);

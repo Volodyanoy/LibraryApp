@@ -1,6 +1,5 @@
 package org.example.volodyanoy.LibrarySpringBootApp.util;
 
-import org.example.volodyanoy.LibrarySpringBootApp.dao.BookDAO;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Book;
 import org.example.volodyanoy.LibrarySpringBootApp.services.BooksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,8 @@ public class BookValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         Book book = (Book) o;
-        Book foundBook = booksService.findByTitleAndYearOfWritingAndAuthor(book);
-        if(foundBook != null){
+
+        if (booksService.isBookExists(book)) {
             errors.rejectValue("title", "", "Такая книга уже существует");
         }
 

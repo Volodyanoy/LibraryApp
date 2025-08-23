@@ -10,9 +10,10 @@ public class RegistrationDTO {
     @Valid
     private Account account;
 
-    RegistrationDTO(){}
+    RegistrationDTO() {
+    }
 
-    public RegistrationDTO(Person person, Account account){
+    public RegistrationDTO(Person person, Account account) {
         this.person = person;
         this.account = account;
     }

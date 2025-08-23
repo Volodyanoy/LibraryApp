@@ -13,4 +13,5 @@ public interface BooksRepository extends JpaRepository<Book, Integer> {
 
     Optional<Book> findByTitleAndYearOfWritingAndAuthor(String title, int yearOfWriting, String author);
 
+    boolean existsByTitleAndYearOfWritingAndAuthor(String title, int yearOfWriting, String author);
 }

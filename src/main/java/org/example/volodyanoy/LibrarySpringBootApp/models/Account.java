@@ -29,7 +29,8 @@ public class Account {
     @Column(name = "role")
     private String role;
 
-    public Account(){}
+    public Account() {
+    }
 
     public Person getPerson() {
         return person;

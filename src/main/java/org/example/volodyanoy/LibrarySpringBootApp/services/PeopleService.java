@@ -4,7 +4,6 @@ import org.example.volodyanoy.LibrarySpringBootApp.dto.RegistrationDTO;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Account;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Book;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
-import org.example.volodyanoy.LibrarySpringBootApp.repositories.AccountsRepository;
 import org.example.volodyanoy.LibrarySpringBootApp.repositories.PeopleRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
@@ -33,27 +32,27 @@ public class PeopleService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Person> findAll(){
+    public List<Person> findAll() {
         return peopleRepository.findAllWithAccounts();
     }
 
-    public List<Person> findAllWithBooks(){
+    public List<Person> findAllWithBooks() {
         return peopleRepository.findAllWithBooksAndAccounts();
     }
 
-    public Person findOne(int id){
+    public Person findOne(int id) {
         Optional<Person> foundPerson = peopleRepository.findById(id);
         return foundPerson.orElse(null);
     }
 
     @Transactional
-    public void save(Person person){
+    public void save(Person person) {
         peopleRepository.save(person);
         logger.info("Успешно добавлен человек {}", person);
     }
 
     @Transactional
-    public void update(int id, RegistrationDTO registrationDTO){
+    public void update(int id, RegistrationDTO registrationDTO) {
         Person person = peopleRepository.findById(id).orElseThrow(() -> new RuntimeException("Person with id " + id + " not found"));
         Account account = person.getAccount();
 
@@ -67,16 +66,16 @@ public class PeopleService {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void delete(int id){
+    public void delete(int id) {
         List<Book> books = getBooksInPersonPossession(id);
-        for(Book book: books){
+        for (Book book : books) {
             book.setOwner(null);
             book.setDateOfBookAssignment(null);
         }
         peopleRepository.deleteById(id);
     }
 
-    public List<Book> getBooksInPersonPossession(int id){
+    public List<Book> getBooksInPersonPossession(int id) {
         return peopleRepository.findById(id)
                 .map(person -> {
                     Hibernate.initialize(person.getBooks());

@@ -2,8 +2,6 @@ package org.example.volodyanoy.LibrarySpringBootApp.controllers;
 
 import jakarta.validation.Valid;
 import org.example.volodyanoy.LibrarySpringBootApp.dto.RegistrationDTO;
-import org.example.volodyanoy.LibrarySpringBootApp.models.Account;
-import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.services.RegistrationService;
 import org.example.volodyanoy.LibrarySpringBootApp.util.AccountValidator;
 import org.slf4j.Logger;
@@ -16,12 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final AccountValidator accountValidator;
     private final RegistrationService registrationService;
     private final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
 
     @Autowired
     public AuthController(AccountValidator accountValidator, RegistrationService registrationService) {
@@ -30,20 +30,20 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage() {
         return "auth/login";
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("registrationDTO") RegistrationDTO registrationDTO){
+    public String registrationPage(@ModelAttribute("registrationDTO") RegistrationDTO registrationDTO) {
         return "auth/registration";
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("registrationDTO") RegistrationDTO registrationDTO, BindingResult bindingResult){
+    public String performRegistration(@ModelAttribute("registrationDTO") @Valid RegistrationDTO registrationDTO, BindingResult bindingResult) {
         accountValidator.validate(registrationDTO.getAccount(), bindingResult);
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             logger.info("Ошибка данных при регистрации пользователя {}", registrationDTO.getAccount());
             return "/auth/registration";
         }
