@@ -22,18 +22,14 @@ import java.util.Collection;
 @RequestMapping("/books")
 public class BooksController {
     private static final Logger log = LoggerFactory.getLogger(BooksController.class);
-    private final BookDAO bookDAO;
     private final BookValidator bookValidator;
-    private final PersonDAO personDAO;
     private final BooksService booksService;
     private final PeopleService peopleService;
     private static final Logger logger = LoggerFactory.getLogger(BooksController.class);
 
     @Autowired
-    public BooksController(BookDAO bookDAO, BookValidator bookValidator, PersonDAO personDAO, BooksService booksService, PeopleService peopleService) {
-        this.bookDAO = bookDAO;
+    public BooksController(BookValidator bookValidator, BooksService booksService, PeopleService peopleService) {
         this.bookValidator = bookValidator;
-        this.personDAO = personDAO;
         this.booksService = booksService;
         this.peopleService = peopleService;
     }
