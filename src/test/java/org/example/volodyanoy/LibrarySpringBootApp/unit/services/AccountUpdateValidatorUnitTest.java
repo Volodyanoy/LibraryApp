@@ -1,8 +1,9 @@
-package org.example.volodyanoy.LibrarySpringBootApp.services;
+package org.example.volodyanoy.LibrarySpringBootApp.unit.services;
 
 
 import org.example.volodyanoy.LibrarySpringBootApp.models.Account;
 import org.example.volodyanoy.LibrarySpringBootApp.repositories.AccountsRepository;
+import org.example.volodyanoy.LibrarySpringBootApp.services.AccountService;
 import org.example.volodyanoy.LibrarySpringBootApp.util.AccountUpdateValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ import org.springframework.validation.Errors;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class AccountUpdateValidatorTest {
+public class AccountUpdateValidatorUnitTest {
     @Mock
     private AccountsRepository accountsRepository;
 

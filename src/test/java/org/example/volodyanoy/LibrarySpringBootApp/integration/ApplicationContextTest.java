@@ -1,10 +1,10 @@
-package org.example.volodyanoy.LibrarySpringBootApp;
+package org.example.volodyanoy.LibrarySpringBootApp.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LibrarySpringBootAppApplicationTests {
+class ApplicationContextTest {
 
     @Test
     void contextLoads() {

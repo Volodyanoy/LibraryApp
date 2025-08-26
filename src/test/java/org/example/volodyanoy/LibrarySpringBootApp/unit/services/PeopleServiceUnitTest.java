@@ -1,9 +1,10 @@
-package org.example.volodyanoy.LibrarySpringBootApp.services;
+package org.example.volodyanoy.LibrarySpringBootApp.unit.services;
 
 
 import org.example.volodyanoy.LibrarySpringBootApp.models.Book;
 import org.example.volodyanoy.LibrarySpringBootApp.models.Person;
 import org.example.volodyanoy.LibrarySpringBootApp.repositories.PeopleRepository;
+import org.example.volodyanoy.LibrarySpringBootApp.services.PeopleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class PeopleServiceTest {
+public class PeopleServiceUnitTest {
     @Mock
     PeopleRepository peopleRepository;
 

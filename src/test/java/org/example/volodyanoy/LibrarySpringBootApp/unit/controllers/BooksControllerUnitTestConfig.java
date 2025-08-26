@@ -1,4 +1,4 @@
-package org.example.volodyanoy.LibrarySpringBootApp.controllers;
+package org.example.volodyanoy.LibrarySpringBootApp.unit.controllers;
 
 import org.example.volodyanoy.LibrarySpringBootApp.services.BooksService;
 import org.example.volodyanoy.LibrarySpringBootApp.services.PeopleService;
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
-public class BooksControllerTestConfig {
+public class BooksControllerUnitTestConfig {
     @Bean
     public BooksService booksService(){
         return Mockito.mock(BooksService.class);
